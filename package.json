@@ -20,6 +20,7 @@
     "homebridge": "0.4"
   },
   "dependencies": {
+    "debug": "^4.1.1",
     "lightwaverf": "https://github.com/eu-evops/node-lightwaverf.git"
   }
 }
