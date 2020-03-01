@@ -1,7 +1,7 @@
 {
   "name": "homebridge-lightwaverf-v1",
   "description": "Homebridge plugin for LightwaverRF v1",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "license": "MIT",
   "author": {
     "name": "Stanislaw Wozniak"
