@@ -1,5 +1,5 @@
-./node_modules/
-./accessories/
-./persist/
-./config.json
+node_modules/
+accessories/
+persist/
+config.json
 yar-error.log
