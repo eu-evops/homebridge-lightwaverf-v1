@@ -1,0 +1,18 @@
+{
+  "name": "homebridge-lightwaverf-v1",
+  "description": "Homebridge plugin for LightwaverRF v1",
+  "version": "1.0.1",
+  "license": "MIT",
+  "devDependencies": {
+    "homebridge": "^0.4.50"
+  },
+  "keywords": [
+    "homebridge-plugin"
+  ],
+  "engines": {
+    "homebridge": "0.4"
+  },
+  "dependencies": {
+    "lightwaverf": "https://github.com/eu-evops/node-lightwaverf.git"
+  }
+}
