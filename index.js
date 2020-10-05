@@ -35,11 +35,7 @@ LightWaveRFV1Platform.prototype.accessories = function(cb) {
         const onCharacteristic = accessory.getService(Service.Lightbulb)
         .getCharacteristic(Characteristic.On);
         
-        onCharacteristic.on('set', (value, cb, context) => {
-          if (value === onCharacteristic.value) {
-            return cb(null, value); // Don't do anything if already handled
-          }
-          
+        onCharacteristic.on('set', (value, cb, context) => {          
           if (value) {
             withRetry(lwf.turnDeviceOn.bind(lwf), 3, 500, a.roomId, a.deviceId)
               .then(result => onCharacteristic.updateValue(true));
