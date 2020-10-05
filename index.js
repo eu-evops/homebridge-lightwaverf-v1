@@ -1,5 +1,5 @@
 const debug = require('debug')('lightwaverf-v1');
-const lightwaverf = require('lightwaverf');
+const lightwaverf = require('@evops/lightwaverf');
 const util = require('util');
 
 const withRetry = require('./lib/withRetry');
