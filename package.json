@@ -1,7 +1,7 @@
 {
-  "name": "@evops/homebridge-lightwaverf-v1",
+  "name": "homebridge-lightwaverf-v1",
   "description": "Homebridge plugin for LightwaverRF v1",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "license": "MIT",
   "author": {
     "name": "Stanislaw Wozniak"
@@ -21,6 +21,6 @@
   },
   "dependencies": {
     "debug": "^4.1.1",
-    "lightwaverf": "https://github.com/eu-evops/node-lightwaverf.git"
+    "@evops/lightwaverf": "0.0.4"
   }
 }

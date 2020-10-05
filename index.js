@@ -42,10 +42,12 @@ LightWaveRFV1Platform.prototype.accessories = function(cb) {
           
           if (value) {
             withRetry(lwf.turnDeviceOn.bind(lwf), 3, 500, a.roomId, a.deviceId)
-            .then(result => cb(null, true));
+              .then(result => onCharacteristic.updateValue(true));
+            cb();
           } else {
             withRetry(lwf.turnDeviceOff.bind(lwf), 3, 500, a.roomId, a.deviceId)
-            .then(result => cb(null, false));
+            .then(result => onCharacteristic.updateValue(false));
+            cb();
           }
         });
 
@@ -65,7 +67,8 @@ LightWaveRFV1Platform.prototype.accessories = function(cb) {
               a.deviceId,
               value
               )
-            .then(result => cb(null, value));
+            .then(result => brightnessCharacteristic.updateValue(value));
+            cb();
           })
         }
       
