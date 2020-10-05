@@ -6,12 +6,15 @@
   "author": {
     "name": "Stanislaw Wozniak"
   },
+  "scripts": {
+    "dev": "npx homebridge -D -P . -U .homebridge"
+  },
   "main": "index.js",
   "repository": {
     "url": "https://github.com/eu-evops/homebridge-lightwaverf-v1"
   },
   "devDependencies": {
-    "homebridge": "^0.4.50"
+    "homebridge": "^0.4.53"
   },
   "keywords": [
     "homebridge-plugin"
@@ -21,6 +24,6 @@
   },
   "dependencies": {
     "debug": "^4.1.1",
-    "@evops/lightwaverf": "0.0.4"
+    "@evops/lightwaverf": "0.0.6"
   }
 }
