@@ -2,6 +2,17 @@
 # yarn lockfile v1
 
 
+"@evops/lightwaverf@0.0.6":
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/@evops/lightwaverf/-/lightwaverf-0.0.6.tgz#99084e7911b460fba89fe5bf53b7de72482b44a0"
+  integrity sha512-aOxcltvdd6ZVs0+9HMOb/2utSJV5Jli6rb0wy89IUlQOH2Mb6r8sT3o4yJaq7Ulm3cW90drwgmarBb7ooP1d2g==
+  dependencies:
+    debug "~2.2.0"
+    js-yaml ">=3.5.3"
+    request "^2.74.0"
+    request-promise "^4.1.1"
+    wait.for ">=0.6.6"
+
 ajv@^6.5.5:
   version "6.12.0"
   resolved "https://registry.yarnpkg.com/ajv/-/ajv-6.12.0.tgz#06d60b96d87b8454a5adaba86e7854da629db4b7"
@@ -370,10 +381,10 @@ has@^1.0.3:
   dependencies:
     function-bind "^1.1.1"
 
-homebridge@^0.4.50:
-  version "0.4.50"
-  resolved "https://registry.yarnpkg.com/homebridge/-/homebridge-0.4.50.tgz#eac8cb4e61598c85112f47437f44cba65a71b0e5"
-  integrity sha512-V88ME6RLtSGcofXl77KAjlWlmC5O5bRY4BcyBbMjUkGYRdSUcPQUkEsFlGdchpxKoVqyoibHu/mQgN5dQADx7A==
+homebridge@^0.4.53:
+  version "0.4.53"
+  resolved "https://registry.yarnpkg.com/homebridge/-/homebridge-0.4.53.tgz#081b71d3cec93a02b903deb4beaa4945c90482b5"
+  integrity sha512-yi8GEKVEkQWeOE9CPmZiu+7dZzeiqzVX/P8suTd2h1hjXHiuots3UdZunEY4MOwNNPc8w62m47T9pbK6RZM4WA==
   dependencies:
     chalk "^1.1.1"
     commander "2.8.1"
@@ -473,20 +484,10 @@ jsprim@^1.2.2:
     json-schema "0.2.3"
     verror "1.10.0"
 
-"lightwaverf@https://github.com/eu-evops/node-lightwaverf.git":
-  version "0.0.4"
-  resolved "https://github.com/eu-evops/node-lightwaverf.git#b75935e79e2f959ab8b5999e107beb106f44c838"
-  dependencies:
-    debug "~2.2.0"
-    js-yaml ">=3.5.3"
-    request "^2.74.0"
-    request-promise "^4.1.1"
-    wait.for ">=0.6.6"
-
 lodash@^4.17.15:
-  version "4.17.15"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
-  integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
+  version "4.17.20"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.20.tgz#b44a9b6297bcb698f1c51a3545a2b3b368d59c52"
+  integrity sha512-PlhdFcillOINfeV7Ni6oF1TAEayyZBoZ8bcshTHqOYJYlrqzRK5hagpagky5o4HfCzzd1TRkXPMFq6cKk9rGmA==
 
 mime-db@1.43.0:
   version "1.43.0"
