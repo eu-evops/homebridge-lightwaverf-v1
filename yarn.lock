@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@evops/lightwaverf@/Users/swozniak/code/github/node-lightwaverf":
+"@evops/lightwaverf@0.0.9":
   "resolved" "file:../node-lightwaverf"
-  "version" "0.0.7"
+  "version" "0.0.9"
   dependencies:
     "@types/debug" "^4.1.7"
     "@types/js-yaml" "^4.0.5"
