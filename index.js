@@ -1,12 +1,13 @@
 const debug = require('debug')('lightwaverf-v1');
-const lightwaverf = require('@evops/lightwaverf');
+const LightwaveRF = require('@evops/lightwaverf').default;
+const { LightwaveDeviceType } = require('@evops/lightwaverf/dist/LightwaveDevice');
 const util = require('util');
 
 const withRetry = require('./lib/withRetry');
 
-let Service, Characteristic, Accessory, UUID;
+let Service, Characteristic, Accessory, UUID, HapStatusError, HapStatus;
 
-module.exports = function(hb) {
+module.exports = function (hb) {
   Service = hb.hap.Service;
   Characteristic = hb.hap.Characteristic;
   Accessory = hb.hap.Accessory;
@@ -18,86 +19,88 @@ module.exports = function(hb) {
 function LightWaveRFV1Platform(log, config, hap) {
   this.log = log;
   this.config = config;
+  this.config.timeout = this.config.timeout || 1000;
 }
 
-LightWaveRFV1Platform.prototype.accessories = function(cb) { 
-    const self = this;  
-    const lwf = new lightwaverf(this.config, response => {
-      const accessories = response.map(a => {
+LightWaveRFV1Platform.prototype.accessories = function (cb) {
+  const self = this;
+  const lwf = new LightwaveRF(this.config, response => {
+    const accessories = response.map(a => {
 
-        const accessoryUuid = UUID.generate(util.format("%d-%d-%s", a.roomid, a.deviceId, a.deviceType));
-        const accessory = new LightWaveRFV1Accessory(a.roomName + ' ' + a.deviceName, accessoryUuid, self.log, lightwaverf);
-        
-        // If it's a dimmer, add brightness characteristic
-        let brightnessCharacteristic;
-        accessory.addService(new Service.Lightbulb())
-        
-        const onCharacteristic = accessory.getService(Service.Lightbulb)
+      const accessoryUuid = UUID.generate(util.format("%d-%d-%s", a.roomid, a.deviceId, a.deviceType));
+      const accessory = new LightWaveRFV1Accessory(a.roomName + ' ' + a.deviceName, accessoryUuid, self.log, LightwaveRF);
+
+      // If it's a dimmer, add brightness characteristic
+      let brightnessCharacteristic;
+      accessory.addService(new Service.Lightbulb())
+
+      const onCharacteristic = accessory.getService(Service.Lightbulb)
         .getCharacteristic(Characteristic.On);
-        
-        onCharacteristic.on('set', (value, cb, context) => {          
-          if (value) {
-            withRetry(lwf.turnDeviceOn.bind(lwf), 3, 500, a.roomId, a.deviceId)
-              .then(result => onCharacteristic.updateValue(true));
-            cb();
-          } else {
-            withRetry(lwf.turnDeviceOff.bind(lwf), 3, 500, a.roomId, a.deviceId)
-            .then(result => onCharacteristic.updateValue(false));
-            cb();
-          }
-        });
 
-        if (a.deviceType === 'D') {
-          brightnessCharacteristic = new Characteristic.Brightness();
-          accessory.getService(Service.Lightbulb)
-            .addCharacteristic(brightnessCharacteristic);
-          
-          brightnessCharacteristic.on('set', (value, cb, context) => {
-            debug("Dimming the lamp to value", value);
-
-            withRetry(
-              lwf.setDeviceDim.bind(lwf),
-              3,
-              500,
-              a.roomId,
-              a.deviceId,
-              value
-              )
-            .then(result => brightnessCharacteristic.updateValue(value));
-            cb();
-          })
+      //if (a.deviceType === LightwaveDeviceType.OnOff) {
+      onCharacteristic.on('set', (value, cb, context) => {
+        if (value) {
+          console.log("LightwaveRF: Turning lamp on");
+          a.turnOn()
+            .then(() => {
+              onCharacteristic.updateValue(true);
+              cb();
+            })
+            .catch(cb);
+        } else {
+          a.turnOff()
+            .then(() => {
+              onCharacteristic.updateValue(false)
+              cb()
+            })
+            .catch(cb);
         }
-      
-      lwf.on('RESPONSE_RECEIVED', response => {
-        if (response.room === a.roomId) {
-          if (response.fn === "allOff") {
-            onCharacteristic.updateValue(false);
-          }
+      });
+      //}
 
-          if(response.dev === a.deviceId) {
-            switch(response.fn) {
-              case 'off':
-                debug("Setting characteristic to false");
-                onCharacteristic.updateValue(false);
-                break;
-              case 'on':
-                debug("Setting characteristic to true");
-                onCharacteristic.updateValue(true);
-                break;
-              case 'dim':
-                debug("Setting characteristic to percentage", response.param / 32 * 100, "and lamp status", response.param, response.param > 0);
-
-                onCharacteristic.updateValue(response.param > 0);
-                if (brightnessCharacteristic) {
-                  brightnessCharacteristic.updateValue(response.param / 32 * 100);
-                }
-                break;
-            }
-          }
+      lwf.on('deviceTurnedOn', (roomId, deviceId) => {
+        if (a.roomId === roomId && a.deviceId === deviceId) {
+          console.log('LightwaveRF: event: Device turned on', roomId, deviceId);
+          onCharacteristic.updateValue(true);
         }
       })
-            
-      return accessory;        
+
+      lwf.on('deviceTurnedOff', (roomId, deviceId) => {
+        if (a.roomId === roomId && a.deviceId === deviceId) {
+          console.log('LightwaveRF: event: Device turned off', roomId, deviceId);
+          onCharacteristic.updateValue(false);
+        }
+      })
+
+
+      if (a.deviceType === LightwaveDeviceType.Dimmer) {
+        brightnessCharacteristic = new Characteristic.Brightness();
+        accessory.getService(Service.Lightbulb)
+          .addCharacteristic(brightnessCharacteristic);
+
+        brightnessCharacteristic.on('set', (value, cb, context) => {
+          debug("Dimming the lamp to value", value);
+
+          a.dim(value)
+            .then(() => {
+              brightnessCharacteristic.updateValue(value);
+              cb();
+            })
+            .catch(cb);
+        })
+
+        lwf.on('deviceDimmed', (roomId, deviceId, dimPercentage) => {
+          if (a.roomId === roomId && a.deviceId === deviceId) {
+            console.log('LightwaveRF: event: Device dimmend', roomId, deviceId, dimPercentage);
+            onCharacteristic.updateValue(dimPercentage > 0);
+            if (brightnessCharacteristic) {
+              brightnessCharacteristic.updateValue(dimPercentage);
+            }
+          }
+        })
+      }
+
+      return accessory;
     })
 
     cb(accessories);
@@ -115,15 +118,15 @@ function LightWaveRFV1Accessory(name, uuid, log, api) {
 
   const self = this;
 
-  this.getServices = function() {
+  this.getServices = function () {
     return this.services;
   }
 
-  this.addService = function(service) {
+  this.addService = function (service) {
     this.services.push(service);
   }
 
-  this.getService = function(serviceType) {
+  this.getService = function (serviceType) {
     return self.services.find(s => {
       return s instanceof serviceType
     })
