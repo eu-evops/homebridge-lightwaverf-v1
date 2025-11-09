@@ -3,3 +3,4 @@ accessories/
 persist/
 config.json
 yar-error.log
+.dist/

@@ -1,29 +1,36 @@
 {
   "name": "@evops/homebridge-lightwaverf-v1",
   "description": "Homebridge plugin for LightwaverRF v1",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "license": "MIT",
+  "main": "./.dist/index.js",
   "author": {
     "name": "Stanislaw Wozniak"
   },
   "scripts": {
-    "dev": "npx homebridge -D -P . -U .homebridge"
+    "dev": "npx homebridge -D -U .homebridge"
   },
-  "main": "index.js",
   "repository": {
     "url": "https://github.com/eu-evops/homebridge-lightwaverf-v1"
   },
   "devDependencies": {
-    "homebridge": "1.1.7"
+    "@types/debug": "^4.1.12",
+    "@types/node": "^24.5.2",
+    "eslint": "^9.36.0",
+    "homebridge": "^1.8",
+    "typescript": "^5.9.2",
+    "typescript-eslint": "^8.44.0"
   },
   "keywords": [
     "homebridge-plugin"
   ],
   "engines": {
-    "homebridge": ">= 1.0.0"
+    "node": "^20.18.0 || ^22.10.0 || ^24.0.0",
+    "homebridge": "^1.8.0 || ^2.0.0-beta.0"
   },
   "dependencies": {
+    "@evops/lightwaverf": "^1.0.0",
     "debug": "^4.1.1",
-    "@evops/lightwaverf": "0.0.9"
+    "homebridge-lib": "^7.1.8"
   }
 }

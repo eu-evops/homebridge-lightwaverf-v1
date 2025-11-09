@@ -1,0 +1,26 @@
+{
+  "pluginAlias": "LightWaveRFV1",
+  "pluginType": "platform",
+  "singular": true,
+  "strictValidation": false,
+  "schema": {
+    "type": "object",
+    "required": [
+      "email",
+      "pin"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "email": {
+        "title": "Email",
+        "type": "string",
+        "default": "Email to login to LightwaveRF portal"
+      },
+      "pin": {
+        "title": "Pin",
+        "type": "string",
+        "default": "Pin to login to LightwaveRF portal"
+      }
+    }
+  }
+}
