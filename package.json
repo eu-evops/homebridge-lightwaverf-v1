@@ -32,5 +32,9 @@
     "@evops/lightwaverf": "^1.0.0",
     "debug": "^4.1.1",
     "homebridge-lib": "^7.1.8"
+  },
+  "funding": {
+    "type": "buymeacoffee",
+    "url": "https://www.buymeacoffee.com/stanwozniak"
   }
 }
